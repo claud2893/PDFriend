@@ -1,0 +1,2 @@
+- Function to import only some pages
+- Buttons to move the order in the list (at the right of each name)
