@@ -16,16 +16,9 @@ class PDFTool:
         self.listbox = tk.Listbox(root, width=60)
         self.listbox.pack(padx=10, pady=5)
 
-        self.compress_var = tk.BooleanVar(value=True)
-        tk.Checkbutton(
-            root,
-            text="Compress / Shrink Output PDF",
-            variable=self.compress_var
-        ).pack(pady=5)
-
         tk.Button(
             root,
-            text="Generate a merged/compressed PDF",
+            text="Build your PDF",
             command=self.combine_and_save,
             bg="#4CAF50",
             fg="white"
@@ -63,15 +56,11 @@ class PDFTool:
                 with pikepdf.open(file) as src:
                     pdf.pages.extend(src.pages)
 
-            if self.compress_var.get():
-                pdf.save(
-                    save_path,
-                    optimize_streams=True, #this does not work - deleting it does not compress PDFs
-                    compress_streams=True,
-                    linearize=True
-                )
-            else:
-                pdf.save(save_path)
+            pdf.save(
+                save_path,
+                compress_streams=True,
+                linearize=True
+            )
 
             messagebox.showinfo("Success", "PDF created successfully!")
 
