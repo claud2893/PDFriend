@@ -4,15 +4,18 @@ import pikepdf
 from pathlib import Path
 
 class PDFTool:
+    """Intializes the PDF manipulation tool GUI and functionality."""
     def __init__(self, root):
         self.root = root
         self.root.title("PDFriend")
         self.files = []
 
-        # UI
+        # Buttons for file operations
         tk.Button(root, text="Add PDFs", command=self.add_files).pack(pady=5)
+        tk.Button(root, text="Select pages from a PDF", command=self.add_pages_from_file).pack(pady=5)
         tk.Button(root, text="Clear List", command=self.clear_files).pack(pady=5)
 
+        # Listbox to display selected files
         self.listbox = tk.Listbox(root, width=60)
         self.listbox.pack(padx=10, pady=5)
 
@@ -36,6 +39,8 @@ class PDFTool:
             fg="white"
         ).pack(side=tk.LEFT, padx=5)
 
+
+        # Button to combine and save PDFs
         tk.Button(
             root,
             text="Build your PDF",
@@ -45,6 +50,7 @@ class PDFTool:
         ).pack(pady=10)
 
     def add_files(self):
+        """Opens a file dialog to select PDF files and adds them to the list."""
         selected = filedialog.askopenfilenames(
             filetypes=[("PDF files", "*.pdf")]
         )
@@ -54,15 +60,20 @@ class PDFTool:
                 self.listbox.insert(tk.END, Path(f).name)
 
     def clear_files(self):
+        """Clears the list of selected PDF files."""
         self.files.clear()
         self.listbox.delete(0, tk.END)
 
     def move_up(self):
+        """Moves the selected file up in the list."""
+    
+        # Get index of selected item
         selection = self.listbox.curselection()
         if not selection:
             messagebox.showwarning("Warning", "Please select an item to move up.")
             return
         
+        # Show warning if already at the top
         index = selection[0]
         if index == 0:
             messagebox.showwarning("Warning", "Item is already at the top.")
@@ -78,11 +89,15 @@ class PDFTool:
         self.listbox.selection_set(index - 1)
 
     def move_down(self):
+        """Moves the selected file down in the list."""
+
+        # Get index of selected item
         selection = self.listbox.curselection()
         if not selection:
             messagebox.showwarning("Warning", "Please select an item to move down.")
             return
         
+        # Show warning if already at the bottom
         index = selection[0]
         if index == len(self.files) - 1:
             messagebox.showwarning("Warning", "Item is already at the bottom.")
@@ -98,10 +113,14 @@ class PDFTool:
         self.listbox.selection_set(index + 1)
 
     def combine_and_save(self):
+        """Generates the combined PDF according to the list order and saves it to a specified location."""
+        
+        # Check if there are files to combine
         if not self.files:
             messagebox.showerror("Error", "No PDF files selected.")
             return
 
+        # Prompt user for save location
         save_path = filedialog.asksaveasfilename(
             defaultextension=".pdf",
             filetypes=[("PDF files", "*.pdf")]
@@ -109,6 +128,7 @@ class PDFTool:
         if not save_path:
             return
 
+        # Try to combine PDFs and save, otherwise show error message
         try:
             pdf = pikepdf.Pdf.new()
 
