@@ -1,7 +1,7 @@
 # PDFriend
 An executable program to build your own PDFs: merge PDF files or select only the pages you need to compose your file.
 
-![alt text](github.com/claud2893/PDFriend/blob/main/PDFriend_screenshot.jpg?)
+![alt text](github.com/claud2893/PDFriend/blob/main/PDFriend_screenshot.jpg?raw=true)
 
 ## No more sketchy websites, no installation! Combine your PDF offline
 Do you need to combine multiple PDF files? Do not use sketchy websites! Use PDFriend: an executable program to edit work with your files locally.
